@@ -1,12 +1,65 @@
-name: Hello World Workflow
+name: GitHub Actions Learning
 
 on:
   push:
+    branches:
+      - main
+
+env:
+  NAME: Priyank
+  COURSE: GitHub Actions
 
 jobs:
-  hello:
+
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print Hello World
-        run: echo "Hello World"
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Print Custom Variables
+        run: |
+          echo "Name: $NAME"
+          echo "Course: $COURSE"
+
+      - name: Print GitHub Variables
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Workflow: ${{ github.workflow }}"
+
+      - name: Create Sample File
+        run: |
+          echo "Hello from GitHub Actions" > demo.txt
+          cat demo.txt
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sample-artifact
+          path: demo.txt
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Testing Step
+        run: |
+          echo "Testing Started"
+          echo "Testing Completed"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Deployment Step
+        run: |
+          echo "Deploying Application"
+          echo "Deployment Successful"

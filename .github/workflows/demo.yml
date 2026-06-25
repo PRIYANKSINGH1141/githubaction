@@ -63,5 +63,5 @@ jobs:
         run: |
           echo "Deploying Application"
           echo "Deployment Successful"
-          echo "role: $role"
+          echo "${{ vars.NAME }}"
           
